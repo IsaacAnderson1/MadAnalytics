@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
@@ -205,3 +206,21 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+=======
+# Python generated files
+__pycache__/
+*.pyc
+
+# Sensitive Data & Local Database
+data.csv
+data.txt
+db.json
+
+
+.DS_Store
+
+.idea/
+
+# Rule for environment files (good practice)
+.env
+>>>>>>> d8bb715 (Update application code and add gitignore rules)

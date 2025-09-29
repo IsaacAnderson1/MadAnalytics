@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MadAnalytics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6edf3;
+      font-family: 'Orbitron', 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      gap: 1rem;
+      margin-top: 40px;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 24px;
+      flex: 1;
+      align-items: flex-start;
+      box-shadow: 0 4px 16px rgba(0, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .group {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 0 10px;
+    }
+
+    .group label {
+      margin-bottom: 12px;
+      width: 100%;
+      font-size: 14px;
+    }
+
+    .group label span {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="number"] {
+      background: #161b22;
+      color: #e6edf3;
+      border: 1px solid #30363d;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.3);
+      margin-top: 6px;
+    }
+
+    button {
+      background-color: #00d9ff;
+      color: #0d1117;
+      border: none;
+      border-radius: 8px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      align-self: flex-end;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #00b3cc;
+      transform: scale(1.03);
+    }
+
+    #result {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .result-container {
+      position: absolute;
+      top: 20px;
+      left: 45%;
+      font-size: 16px;
+      color: #e6edf3;
+      line-height: 1.8em;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+    }
+
+    .thinking-box {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #161b22;
+      color: #00d9ff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 12px 18px;
+      border: 1px solid #00d9ff;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 217, 255, 0.4);
+      opacity: 1;
+      transition: opacity 0.5s ease;
+      z-index: 999;
+    }
+
+    strong {
+      color: #58a6ff;
+    }
+
+    u {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="thinking-box" id="thinkingBox">Hi I am MadAnalytics How may I assist you today?</div>
+
+  <div class="result-container">
+    <div><strong>Predicted Incr Units:</strong> <span id="units_result"></span></div>
+    <div><strong>Predicted Incr Revenue:</strong> <span id="revenue_result"></span></div>
+  </div>
+
+  <div class="container">
+    <div class="panel">
+      <div class="group">
+        <p><strong>What If Promo Strategy</strong></p>
+        <label><span>Week of Month </span><input id="week" type="number"></label>
+        <label><span>Month</span><input id="month" type="number"></label>
+        <label><span>Feature (Flyer, Ads etc.)</span><input id="feature" type="checkbox" checked></label>
+        <label><span>Price Decr ($)</span><input id="price_decr" type="number" step="0.01"></label>
+      </div>
+
+      <div class="group">
+        <p><strong>Competitor Running Feature?</strong></p>
+        <label>KRAFT <input id="comp_feat_kraft" type="checkbox"></label>
+        <label>PRIVATE LABEL <input id="comp_feat_private" type="checkbox"></label>
+        <label>SARGENTO <input id="comp_feat_sargento" type="checkbox"></label>
+        <label>LAND O LAKES <input id="comp_feat_lol" type="checkbox"></label>
+      </div>
+
+      <div class="group">
+        <p><strong>Competitor Price Decr ($)</strong></p>
+        <label><span>KRAFT</span><input id="comp_price_kraft" type="number" step="0.01"></label>
+        <label><span>PRIVATE LABEL</span><input id="comp_price_private" type="number" step="0.01"></label>
+        <label><span>SARGENTO</span><input id="comp_price_sargento" type="number" step="0.01"></label>
+        <label><span>LAND O LAKES</span><input id="comp_price_lol" type="number" step="0.01"></label>
+      </div>
+    </div>
+
+    <button onclick="analyze()">Analyze</button>
+  </div>
+  <p id="result"></p>
+
+  <script>
+    const thinkingBox = document.getElementById("thinkingBox");
+    const thinkingSteps = [
+      "Crunching numbers...",
+      "Analyzing historical patterns...",
+      "Evaluating price elasticity...",
+      "Scanning competitor behavior...",
+      "Simulating outcomes...",
+      "Extracting sub-relations...",
+      "Refining revenue projections..."
+    ];
+
+    let thinkingInterval;
+    let thinkingIndex = 0;
+
+    function typeWriterEffect(text, speed = 50, callback = null) {
+      thinkingBox.textContent = '';
+      thinkingBox.style.opacity = 1;
+      let i = 0;
+      const typer = setInterval(() => {
+        thinkingBox.textContent += text.charAt(i);
+        i++;
+        if (i >= text.length) {
+          clearInterval(typer);
+          if (callback) callback();
+        }
+      }, speed);
+    }
+
+    function startThinkingAnimation() {
+      thinkingIndex = 0;
+      clearInterval(thinkingInterval);
+      thinkingInterval = setInterval(() => {
+        thinkingBox.style.opacity = 0;
+        setTimeout(() => {
+          thinkingBox.textContent = thinkingSteps[thinkingIndex % thinkingSteps.length];
+          thinkingBox.style.opacity = 1;
+          thinkingIndex++;
+        }, 300);
+      }, 2500);
+    }
+
+    function stopThinkingAnimation() {
+      clearInterval(thinkingInterval);
+      thinkingBox.style.opacity = 0;
+      setTimeout(() => {
+        thinkingBox.textContent = "Pulling everything together...";
+        thinkingBox.style.opacity = 1;
+
+        // After a short delay, update to "✓ Done"
+        setTimeout(() => {
+          thinkingBox.style.opacity = 0;
+          setTimeout(() => {
+            thinkingBox.textContent = "✓ Done";
+            thinkingBox.style.opacity = 1;
+          }, 300);
+        }, 1500); // matches delay before result display
+      }, 300);
+    }
+
+    window.onload = () => {
+      typeWriterEffect("Hi I am MadAnalytics.", 50, () => {
+        setTimeout(() => {
+          typeWriterEffect("How may I assist you today?", 50);
+        }, 1000); // 1000ms = 1 second pause
+      });
+    };
+
+    async function analyze() {
+    document.getElementById('units_result').innerText = '';
+    document.getElementById('revenue_result').innerText = '';
+
+    startThinkingAnimation(); // ← NEW
+
+    const week = document.getElementById('week').value || 1;
+    const month = document.getElementById('month').value || 1;
+    const feature = document.getElementById('feature').checked;
+    const price_decr = parseFloat(document.getElementById('price_decr').value || 0);
+
+    const comp_features = [
+      document.getElementById('comp_feat_kraft').checked,
+      document.getElementById('comp_feat_private').checked,
+      document.getElementById('comp_feat_sargento').checked,
+      document.getElementById('comp_feat_lol').checked
+    ];
+
+    const comp_prices = [
+      parseFloat(document.getElementById('comp_price_kraft').value || 0),
+      parseFloat(document.getElementById('comp_price_private').value || 0),
+      parseFloat(document.getElementById('comp_price_sargento').value || 0),
+      parseFloat(document.getElementById('comp_price_lol').value || 0)
+    ];
+
+    const payload = {
+      week: parseInt(week),
+      month: parseInt(month),
+      feature_toggle: feature,
+      price_decrease_magnitude: price_decr,
+      competitor_feature_list: comp_features,
+      competitor_price_list: comp_prices
+    };
+
+    const res = await fetch(`http://localhost:8000/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    stopThinkingAnimation(); // ← NEW
+
+    setTimeout(() => {
+      document.getElementById('units_result').innerHTML = `<u>${data.units}</u>`;
+      document.getElementById('revenue_result').innerHTML = `<u>$${data.revenue.toLocaleString()}</u>`;
+    }, 1500); // delay slightly to allow "pulling everything together" message
+  }
+  </script>
+</body>
+</html>
