@@ -1,11 +1,8 @@
-# Python generated files
 __pycache__/
 *.pyc
 
-# Sensitive Data & Local Database
 data.csv
 data.txt
 db.json
 
-# Rule for environment files (good practice)
 .env
