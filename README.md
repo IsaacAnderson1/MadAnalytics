@@ -38,7 +38,7 @@ Instead of relying solely on manual analysis, this tool leverages a custom machi
 
 * Crystal Farms Dairy Company
 
-* Teammates: Albert Wu, Alec Bhamani, Eric Cao, Isaac Anderson(myself)
+* Teammates: Albert Wu, Alec Bhamani, Eric Cao, Adhviklal Thoppe, Isaac Anderson(myself)
 ---
 ## Image of Application
 ![Application Image](images/screenshot.png)
