@@ -26,7 +26,7 @@ Instead of relying solely on manual analysis, this tool leverages a custom machi
 ## Tech Stack
 
 * **Backend:** Python
-* **AI/ML:** Google Gemini 1.5 Pro, Vertex AI
+* **AI/ML:** Google Gemini, Vertex AI
 * **Frontend:** HTML, CSS, JavaScript
 * **Cloud:** Google Cloud Platform
 
